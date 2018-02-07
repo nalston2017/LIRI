@@ -1,22 +1,14 @@
 {
   "name": "LIRI",
   "version": "1.0.0",
-  "description": "Homework #10 node js command line assignment",
+  "description": "",
   "main": "key.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nalston2017/LIRI.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nalston2017/LIRI/issues"
-  },
-  "homepage": "https://github.com/nalston2017/LIRI#readme",
   "dependencies": {
     "dotenv": "^5.0.0",
     "node-spotify-api": "^1.0.7",
