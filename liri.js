@@ -72,7 +72,7 @@ function twitterAPI() {
           "================================ \n\n" +
           tweetSponses[i].text + "\n";
         console.log(tweetSponses);
-        logdata(tweetSponses);
+        logtxt(tweetSponses);
       }
     } else console.log("Sorry I couldn't fullfil your resquest. Please try again.");
   });
@@ -101,6 +101,7 @@ function spotifyAPI(txtFileSong) {
       var previewLink = "";
       if (songInfo[i].preview_url === null) {
         previewLink = "N/A";
+// Add album information
       } else previewLink = songInfo[i].preview_url;
 
       for (let j = 0; j < artistsResponse.length; j++) {
@@ -116,7 +117,7 @@ function spotifyAPI(txtFileSong) {
         "Album: " + songInfo[i].name + "\n" +
         "Preview Link: " + previewLink;
       console.log(songResults);
-      logdata(songResults);
+      logtxt(songResults);
     }
   });
 }
@@ -150,7 +151,7 @@ function OMDBAPI() {
         "Awards: " + omdbResponse.Awards + "\n\n" +
         "================================";
       console.log(omdbResults);
-      logdata(omdbResults);
+      logtxt(omdbResults);
     } else console.log("Sorry I couldn't fullfil your resquest. Please try again.");
   });
 }
@@ -168,7 +169,7 @@ function other() {
 }
 
 // Log to log.txt
-function logdata(data) {
+function logtxt(data) {
   fs.appendFile("log.txt", data, function(error) {
     if (error) {
       console.log(error);
