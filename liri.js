@@ -1,11 +1,12 @@
 require("dotenv").config();
 
 var arguement = process.argv[2];
+var searchItem  = process.argv[3];
 var fs = require("fs");
 var request = require("request");
 var keys = require("./keys.js");
-var twitQuire = ("twitter");
-var spotiFire = ("node-spotify-api");
+var twitQuire = require("twitter");
+var spotiQire = require("node-spotify-api");
 
 var spotify = new Spotify(keys.spotify);
 var twitter = new Twitter(keys.twitter);
@@ -41,12 +42,11 @@ switch (arugement) {
 ///////////////
 
 function twitterAPI() {
-  var userName = process.argv[3];
-  if(!userName) {
-    userName = "FiftyShades";
+  if(!searchItem) {
+    searchItem = "FiftyShades";
   }
   parameters = {
-    screen_name: userName
+    screen_name: searchItem
   };
   twitQuire.get("statuses/user_timeline/", parameters, function (
     error,
@@ -62,10 +62,49 @@ function twitterAPI() {
         console.log(tweetSponses);
         logdata(tweetSponses);
       }
-    } else console.log("Sorry I couldn't fullfil your resquest. Please try again.")
+    } else console.log("Sorry I couldn't fullfil your resquest. Please try again.");
   });
 }
 
-function spotifyAPI() {
+function spotifyAPI(randomSong) {
+var searchLimit = 20;
+if (!searchItem && randomSong) {
+  searchItem = randomSong;
+} else if (!searchItem && !randomSong) {
+  searchItem = "Sorry";
+}
+spotiQire.search({
+type: "track",
+query: searchItem,
+limit: searchLimit
+}, function (error, data) {
+  if (error) {
+    return console.log("Sorry I couldn't fullfil your resquest. Please try again.")
+  }
+  // console.log(data.tracks.items);
+  for (let i = 0; i < searchLimit; i++) {
+    var songInfo = data.tracks.items;
+    var artistsResponse = data.tracks.items[0].artists;
+    var artistArray = [];
+    var previewLink = "";
+    if (songInfo[i].preview_url === null) {
+      previewLink = "N/A";
+    } else previewLink = songInfo[i].preview_url;
 
+    for (let j = 0; j < artistsResponse.length; j++) {
+      if (artistsResponse[j].hasOwnProperty("name")) {
+        artistArray.push(artistsResponse[j].name)
+      }
+    };
+    var artistName = artistArray.name;
+
+    var songResults =
+    "================================ \n\n" +
+    "Artist: " + artistName[i] + "\n" +
+    "Album: " + songInfo[i].name + "\n" +
+    "Preview Link: " + previewLink;
+    console.log(songResults);
+    logdata(songResults);
+  }
+});
 }
