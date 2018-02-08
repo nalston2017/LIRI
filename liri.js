@@ -3,19 +3,19 @@ require("dotenv").config();
 var arguement = process.argv[2];
 var searchItem = process.argv[3];
 var searchLimit = 20;
-
+console.log(searchItem)
 var fs = require("fs");
 var request = require("request");
-var keys = require("./keys.js");
-var twitQuire = require("twitter");
-var spotiQire = require("node-spotify-api");
+var keys = require("./key.js");
+var Twitter = require("twitter");
+var Spotify = require("node-spotify-api");
 
-var spotify = new Spotify(keys.spotify);
-var twitter = new Twitter(keys.twitter);
+var spotifykey = new Spotify(keys.spotify);
+var twitterkey = new Twitter(keys.twitter);
 var ombd = keys.omdb.apikey;
 
 // The switch and cases for what to do based on the arguement
-switch (arugement) {
+switch (arguement) {
   case "my-tweets":
     twitterAPI();
     break;
@@ -34,7 +34,7 @@ switch (arugement) {
       "LIRI is here to respond to whatever request you have. As long as it has to do with twitter, spotify, or OMBD" +
       "\r\n" +
       "First type node liri.js then you have the choice between the commands:" +
-      "\r\n\n"
+      "\r\n\n" +
       " - my-tweets: + a twitter username to call the last 20 tweets of that user" +
       "\r\n\n" +
       " - spotify-this-song: + a song title to return song title and info that meet your request" +
@@ -43,8 +43,7 @@ switch (arugement) {
       "\r\n\n" +
       " - do-what-it-says: will call the song 'I Want It That Way' by the Backstreet Boys." +
       "\r\n\n" +
-      "The only catch is to put all requests in quotation marks ("
-      ") or else I won't be able to understand you."
+      "The only catch is to put all requests in quotation marks or else I won't be able to understand you."
     );
 }
 
@@ -60,60 +59,63 @@ function twitterAPI() {
   parameters = {
     screen_name: searchItem
   };
-  twitQuire.get("statuses/user_timeline/", parameters, function(
+  twitterkey.get("statuses/user_timeline/", parameters, function(
     error,
     tweets,
     response
   ) {
     if (!error) {
-      console.log(`Here are ${userName}'s latest tweets:\n`);
+      console.log(`Here are ${searchItem}'s latest tweets:\n`);
       for (let i = 0; i < searchLimit; i++) {
-        var tweetSponses =
+        var tweetresponses =
           "================================ \n\n" +
-          tweetSponses[i].text + "\n";
-        console.log(tweetSponses);
-        logtxt(tweetSponses);
+          tweets[i].text + "\n";
+        console.log(tweetresponses);
+        logtxt(tweetresponses);
       }
     } else console.log("Sorry I couldn't fullfil your resquest. Please try again.");
   });
 }
 
 // Spotify Function
-function spotifyAPI(txtFileSong) {
-  if (!searchItem && txtFileSong) {
-    searchItem = txtFileSong;
-  } else if (!searchItem && !txtFileSong) {
+function spotifyAPI() {
+  if (!searchItem) {
     searchItem = "The Sign";
+    console.log(searchItem);
   }
-  spotiQire.search({
+  spotifykey.search({
     type: "track",
     query: searchItem,
     limit: searchLimit
   }, function(error, data) {
     if (error) {
-      return console.log("Sorry I couldn't fullfil your resquest. Please try again.")
+      console.log(error);
+      return console.log("Sorry I couldn't fullfil your Spotify resquest. Please try again.")
     }
-    console.log(data.tracks.items);
+    // console.log(data.tracks.items);
     for (let i = 0; i < searchLimit; i++) {
       var songInfo = data.tracks.items;
       var artistsResponse = data.tracks.items[0].artists;
+      // console.log(artistsResponse);
       var artistArray = [];
       var previewLink = "";
+      var ablum = data.tracks.items[0].album.albumtype;
       if (songInfo[i].preview_url === null) {
         previewLink = "N/A";
 // Add album information
       } else previewLink = songInfo[i].preview_url;
 
-      for (let j = 0; j < artistsResponse.length; j++) {
-        if (artistsResponse[j].hasOwnProperty("name")) {
-          artistArray.push(artistsResponse[j].name)
-        }
-      };
-      var artistName = artistArray.name;
+      // for (let j = 0; j < artistsResponse.length; j++) {
+      //   if (artistsResponse[j].hasOwnProperty("name")) {
+      //     artistArray.push(artistsResponse[j].name)
+      //     console.log(artistsResponse[j]);
+      //   }
+      // };
+      // var artistName = artistArray[i];
 
       var songResults =
         "================================ \n\n" +
-        "Artist: " + artistName[i] + "\n" +
+        "Artist: " + artistsResponse + "\n" +
         "Album: " + songInfo[i].name + "\n" +
         "Preview Link: " + previewLink;
       console.log(songResults);
