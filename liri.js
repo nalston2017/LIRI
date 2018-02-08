@@ -12,7 +12,9 @@ var Spotify = require("node-spotify-api");
 
 var spotifykey = new Spotify(keys.spotify);
 var twitterkey = new Twitter(keys.twitter);
-var ombd = keys.omdb.apikey;
+var omdb = keys.omdb.apikey;
+
+
 
 // The switch and cases for what to do based on the arguement
 switch (arguement) {
@@ -31,7 +33,7 @@ switch (arguement) {
 
     console.log(
       "\r\n" +
-      "LIRI is here to respond to whatever request you have. As long as it has to do with twitter, spotify, or OMBD" +
+      "LIRI is here to respond to whatever request you have. As long as it has to do with twitter, spotify, or omdb" +
       "\r\n" +
       "First type node liri.js then you have the choice between the commands:" +
       "\r\n\n" +
@@ -73,7 +75,7 @@ function twitterAPI() {
         console.log(tweetresponses);
         logtxt(tweetresponses);
       }
-    } else console.log("Sorry I couldn't fullfil your resquest. Please try again.");
+    } else console.log("Sorry I couldn't fullfil your Twitter resquest. Please try again.");
   });
 }
 
@@ -114,7 +116,7 @@ function spotifyAPI() {
       // var artistName = artistArray[i];
 
       var songResults =
-        "================================ \n\n" +
+        "\n\n ================================ \n\n" +
         "Artist: " + artistsResponse + "\n" +
         "Album: " + songInfo[i].name + "\n" +
         "Preview Link: " + previewLink;
@@ -129,19 +131,16 @@ function OMDBAPI() {
   if (!searchItem) {
     searchItem = "Mr. Nobody";
   }
-  var queryUrl = "http://www.omdbapi.com/?i=tt3896198&t=" + searchItem + "&apikey=" + ombd;
-  request(queryURL, function(error, response, body) {
+  var queryUrl = "http://www.omdbapi.com/?i=tt3896198&t=" + searchItem + "&apikey=" + omdb;
+  request(queryUrl, function(error, response, body) {
 
-    // change code ti searchLimi after testing
+    // change code to searchLimit after testing
     if (!error && response.statusCode === 200) {
       var omdbResponse = JSON.parse(body)
-      var rottenTomatoesRating = "";
-      console.log("body:", omdbResponse);
-      if (omdbResponse.hasOwnProperty(omdbResponse.Ratings[1])) {
-        rottenTomatoesRating = omdbResponse.Ratings[1].Value;
-      } else rottenTomatoesRating = "N/A";
+      var rottenTomatoesRating = omdbResponse.Ratings[1].Value;;
+
       var omdbResults =
-        "================================ \n\n"
+        "\n\n =============================== \n\n" +
       "Title: " + omdbResponse.Title + "\n" +
         "Year: " + omdbResponse.Year + "\n" +
         "IMDB Rating: " + omdbResponse.imdbRating + "\n" +
@@ -154,7 +153,8 @@ function OMDBAPI() {
         "================================";
       console.log(omdbResults);
       logtxt(omdbResults);
-    } else console.log("Sorry I couldn't fullfil your resquest. Please try again.");
+    }
+    else console.log("Sorry I couldn't fullfil your OMDB resquest. Please try again.");
   });
 }
 
