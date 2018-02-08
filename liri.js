@@ -104,7 +104,7 @@ function spotifyAPI() {
       var ablum = data.tracks.items[0].album.albumtype;
       if (songInfo[i].preview_url === null) {
         previewLink = "N/A";
-// Add album information
+        // Add album information
       } else previewLink = songInfo[i].preview_url;
 
       // for (let j = 0; j < artistsResponse.length; j++) {
@@ -141,7 +141,7 @@ function OMDBAPI() {
 
       var omdbResults =
         "\n\n =============================== \n\n" +
-      "Title: " + omdbResponse.Title + "\n" +
+        "Title: " + omdbResponse.Title + "\n" +
         "Year: " + omdbResponse.Year + "\n" +
         "IMDB Rating: " + omdbResponse.imdbRating + "\n" +
         "Rotten Tomatoes Rating: " + rottenTomatoesRating + "\n" +
@@ -153,8 +153,7 @@ function OMDBAPI() {
         "================================";
       console.log(omdbResults);
       logtxt(omdbResults);
-    }
-    else console.log("Sorry I couldn't fullfil your OMDB resquest. Please try again.");
+    } else console.log("Sorry I couldn't fullfil your OMDB resquest. Please try again.");
   });
 }
 
