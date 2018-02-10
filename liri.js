@@ -113,7 +113,6 @@ function spotifyAPI(txtFileSong) {
       for (let j = 0; j < artistsResponse.length; j++) {
         if (artistsResponse[j].hasOwnProperty("name")) {
           artistArray.push(artistsResponse[j].name)
-          // console.log(artistArray);
         }
       };
       var artistName = artistArray;
@@ -121,7 +120,7 @@ function spotifyAPI(txtFileSong) {
       var songResults =
         "\n\n================================\n\n" +
         "Artist: " + artistName + "\n" +
-        "Song: "+ songInfo[i].name + "\n" +
+        "Song: " + songInfo[i].name + "\n" +
         "Album: " + album + "\n" +
         "Preview Link: " + previewLink;
       console.log(songResults);
