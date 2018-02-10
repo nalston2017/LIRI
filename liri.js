@@ -3,7 +3,6 @@ require("dotenv").config();
 var arguement = process.argv[2];
 var searchItem = process.argv[3];
 var searchLimit = 20;
-console.log(searchItem)
 var fs = require("fs");
 var request = require("request");
 var keys = require("./key.js");
@@ -30,7 +29,7 @@ switch (arguement) {
   case "do-what-it-says":
     other();
     break;
-
+  default:
     console.log(
       "\r\n" +
       "LIRI is here to respond to whatever request you have. As long as it has to do with twitter, spotify, or omdb" +
@@ -80,11 +79,15 @@ function twitterAPI() {
 }
 
 // Spotify Function
-function spotifyAPI() {
-  if (!searchItem) {
+function spotifyAPI(txtFileSong) {
+  if (!searchItem && txtFileSong) {
+    searchItem = txtFileSong;
+    searchLimit = 1;
+  } else if (!searchItem && !txtFileSong) {
     searchItem = "The Sign";
-    console.log(searchItem);
   }
+  console.log(searchItem);
+
   spotifykey.search({
     type: "track",
     query: searchItem,
@@ -107,13 +110,13 @@ function spotifyAPI() {
         // Add album information
       } else previewLink = songInfo[i].preview_url;
 
-      // for (let j = 0; j < artistsResponse.length; j++) {
-      //   if (artistsResponse[j].hasOwnProperty("name")) {
-      //     artistArray.push(artistsResponse[j].name)
-      //     console.log(artistsResponse[j]);
-      //   }
-      // };
-      // var artistName = artistArray[i];
+      for (let j = 0; j < artistsResponse.length; j++) {
+        if (artistsResponse[j].hasOwnProperty("name")) {
+          artistArray.push(artistsResponse[j].name)
+          console.log(artistsResponse[j]);
+        }
+      };
+      var artistName = artistArray[i];
 
       var songResults =
         "\n\n ================================ \n\n" +
@@ -140,7 +143,7 @@ function OMDBAPI() {
       var rottenTomatoesRating = omdbResponse.Ratings[1].Value;;
 
       var omdbResults =
-        "\n\n =============================== \n\n" +
+        "\n\n===============================\n\n" +
         "Title: " + omdbResponse.Title + "\n" +
         "Year: " + omdbResponse.Year + "\n" +
         "IMDB Rating: " + omdbResponse.imdbRating + "\n" +
@@ -164,7 +167,7 @@ function other() {
       return console.log(error);
     }
     var txtFileArray = data.split(",");
-    var txtFileSong = txtFileArray[1];
+    txtFileSong = txtFileArray[1];
     spotifyAPI(txtFileSong);
   });
 }
