@@ -69,7 +69,7 @@ function twitterAPI() {
       console.log(`Here are ${searchItem}'s latest tweets:\n`);
       for (let i = 0; i < searchLimit; i++) {
         var tweetresponses =
-          "================================ \n\n" +
+          "================================\n\n" +
           tweets[i].text + "\n";
         console.log(tweetresponses);
         logtxt(tweetresponses);
@@ -85,26 +85,26 @@ function spotifyAPI(txtFileSong) {
     searchLimit = 1;
   } else if (!searchItem && !txtFileSong) {
     searchItem = "The Sign";
+    searchLimit = 5;
   }
   console.log(searchItem);
-
+  console.log(searchLimit);
   spotifykey.search({
     type: "track",
     query: searchItem,
     limit: searchLimit
   }, function(error, data) {
     if (error) {
-      console.log(error);
       return console.log("Sorry I couldn't fullfil your Spotify resquest. Please try again.")
     }
     // console.log(data.tracks.items);
     for (let i = 0; i < searchLimit; i++) {
       var songInfo = data.tracks.items;
       var artistsResponse = data.tracks.items[0].artists;
-      // console.log(artistsResponse);
       var artistArray = [];
       var previewLink = "";
-      var ablum = data.tracks.items[0].album.albumtype;
+      var album = songInfo[i].album.name;
+      // console.log(album);
       if (songInfo[i].preview_url === null) {
         previewLink = "N/A";
         // Add album information
@@ -113,15 +113,16 @@ function spotifyAPI(txtFileSong) {
       for (let j = 0; j < artistsResponse.length; j++) {
         if (artistsResponse[j].hasOwnProperty("name")) {
           artistArray.push(artistsResponse[j].name)
-          console.log(artistsResponse[j]);
+          // console.log(artistArray);
         }
       };
-      var artistName = artistArray[i];
+      var artistName = artistArray;
 
       var songResults =
-        "\n\n ================================ \n\n" +
-        "Artist: " + artistsResponse + "\n" +
-        "Album: " + songInfo[i].name + "\n" +
+        "\n\n================================\n\n" +
+        "Artist: " + artistName + "\n" +
+        "Song: "+ songInfo[i].name + "\n" +
+        "Album: " + album + "\n" +
         "Preview Link: " + previewLink;
       console.log(songResults);
       logtxt(songResults);
