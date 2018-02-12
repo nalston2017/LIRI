@@ -87,8 +87,6 @@ function spotifyAPI(txtFileSong) {
     searchItem = "The Sign";
     searchLimit = 5;
   }
-  console.log(searchItem);
-  console.log(searchLimit);
   spotifykey.search({
     type: "track",
     query: searchItem,
@@ -100,7 +98,7 @@ function spotifyAPI(txtFileSong) {
     // console.log(data.tracks.items);
     for (let i = 0; i < searchLimit; i++) {
       var songInfo = data.tracks.items;
-      var artistsResponse = data.tracks.items[0].artists;
+      var artistsResponse = songInfo[i].artists;
       var artistArray = [];
       var previewLink = "";
       var album = songInfo[i].album.name;
