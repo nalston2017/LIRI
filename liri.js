@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+// Requirement variables set globally.
 var arguement = process.argv[2];
 var searchItem = process.argv[3];
 var searchLimit = 20;
@@ -12,8 +13,6 @@ var Spotify = require("node-spotify-api");
 var spotifykey = new Spotify(keys.spotify);
 var twitterkey = new Twitter(keys.twitter);
 var omdb = keys.omdb.apikey;
-
-
 
 // The switch and cases for what to do based on the arguement
 switch (arguement) {
@@ -95,7 +94,6 @@ function spotifyAPI(txtFileSong) {
     if (error) {
       return console.log("Sorry I couldn't fullfil your Spotify resquest. Please try again.")
     }
-    // console.log(data.tracks.items);
     for (let i = 0; i < searchLimit; i++) {
       var songInfo = data.tracks.items;
       var artistsResponse = songInfo[i].artists;
@@ -158,7 +156,7 @@ function OMDBAPI() {
   });
 }
 
-// Function to grab from Text file
+// Function to grab from the Random Text file
 function other() {
   fs.readFile("./random.txt", "utf8", function(error, data) {
     if (error) {
@@ -170,7 +168,7 @@ function other() {
   });
 }
 
-// Log to log.txt
+// Log to log.txt. This function loads the data to the text file.
 function logtxt(data) {
   fs.appendFile("log.txt", data, function(error) {
     if (error) {
